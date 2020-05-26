@@ -14,7 +14,7 @@ app.use(bodyParser.json())
 
 app.get('/', (req, res)=> {
     pool
-        .query('SELECT * FROM users')
+        .query('SELECT * FROM orders')
         .then(data => res.json(data.rows))
         .catch(err => console.log(err))
 })
@@ -22,7 +22,7 @@ app.get('/', (req, res)=> {
 app.get('/', (req, res)=> {
     const {id} = req.params
     pool
-        .query('SELECT * FROM users WHERE id=$1', [id])
+        .query('SELECT * FROM orders WHERE id=$1', [id])
         .then(data => res.json(data.rows))
         .catch(err => console.log(err))
 })
