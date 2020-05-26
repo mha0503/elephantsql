@@ -36,13 +36,24 @@ app.post('/', (req, res)=> {
 })
 
 app.put('/:id', (req, res)=> {
-    const {id} = teq.params
+    const {id} = req.params
     const {first_name, last_name, age} = req.body
     pool
-        .query('UPDATE users SET first_name=$1, last_name=$2, age=$3 WHERE id=$4 Values($1,$2,$3) RETURNING *', [first_name, last_name, age, id])
+        .query('UPDATE users SET first_name=$1, last_name=$2, age=$3 WHERE id=$4 RETURNING *', [first_name, last_name, age, id])
         .then(data => res.json(data.rows))
         .catch(err => console.log(err))
 })
+
+app.delete('/:id', (req, res)=> {
+    const {id} = req.params
+
+    pool
+        .query('DELETE FROM users WHERE id=$1 RETURNING *', [id])
+        .then(data => res.json(data.rows))
+        .catch(err => console.log(err))
+})
+
+
 const port = process.env.PORT || 3000
 
 app.listen(port, ()=>{
